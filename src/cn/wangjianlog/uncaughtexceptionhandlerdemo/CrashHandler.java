@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -19,7 +20,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Environment;
 
-
+@SuppressLint("SimpleDateFormat")
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
 	public static final String TAG = CrashHandler.class.getSimpleName();
 	private static CrashHandler INSTANCE = new CrashHandler();
@@ -61,13 +62,13 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
 			}
 		}
-		
 
-//		Intent intent = new Intent();
-//		intent.setClass(mContext, SplashActivity.class);
-//		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		mContext.startActivity(intent);
+		// Intent intent = new Intent();
+		// intent.setClass(mContext, SplashActivity.class);
+		// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		// mContext.startActivity(intent);
 		android.os.Process.killProcess(android.os.Process.myPid());
+		System.exit(1);
 	}
 
 	/**
@@ -89,45 +90,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 		if (ex == null) {
 			return true;
 		}
-		// final String msg = ex.getLocalizedMessage();
-		final StackTraceElement[] stack = ex.getStackTrace();
-		final String message = ex.getMessage();
-		// 使用Toast来显示异常信息
-//		new Thread() {
-//			@Override
-//			public void run() {
-//				Looper.prepare();
-//				// Toast.makeText(mContext, "程序出错啦:" + message,
-//				// Toast.LENGTH_LONG).show();
-//				// 可以只创建一个文件，以后全部往里面append然后发送，这样就会有重复的信息，个人不推荐
-//				String path = Environment.getExternalStorageDirectory()
-//						+ "lenovo/error-info";
-//
-//				String fileName = "lenovo/error-info/crash-"
-//						+ System.currentTimeMillis() + ".log";
-//
-//				File dir = new File(path);
-//				if (!dir.exists()) {
-//					dir.mkdirs();
-//				}
-//
-//				File file = new File(path, fileName);
-//				try {
-//					FileOutputStream fos = new FileOutputStream(file, true);
-//					fos.write(message.getBytes());
-//					for (int i = 0; i < stack.length; i++) {
-//						fos.write(stack.toString().getBytes());
-//					}
-//					fos.flush();
-//					fos.close();
-//				} catch (Exception e) {
-//
-//				}
-//				Looper.loop();
-//			}
-//
-//		}.start();
-
 		// 收集设备参数信息
 		collectDeviceInfo(mContext);
 		// 保存日志文件
